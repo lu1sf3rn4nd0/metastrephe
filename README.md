@@ -23,7 +23,7 @@ Após iniciar, acesse a documentação interativa Swagger em [http://localhost:8
 
 ### Conversão via REST
 
-Envie uma requisição `POST` para `http://localhost:8080/api/har/convert` com um arquivo `.har` no campo `file` (multipart/form-data). O serviço retornará o arquivo CSV pronto para download.
+Envie uma requisição `POST` para `http://localhost:8080/api/har/convert` com um arquivo `.har` no campo `file` (multipart/form-data). O serviço retornará o arquivo CSV pronto para download. O tamanho máximo padrão para upload é de **50 MB** e pode ser ajustado nas propriedades `spring.servlet.multipart.max-file-size` e `spring.servlet.multipart.max-request-size` do arquivo `application.properties`.
 
 ## Conversão via linha de comando
 
