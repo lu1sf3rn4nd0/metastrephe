@@ -40,7 +40,12 @@ public class HarConversionService {
                 Iterator<JsonNode> iterator = entries.elements();
                 while (iterator.hasNext()) {
                     JsonNode entry = iterator.next();
-                    List<String> record = createRecord(entry);
+                    JsonNode requestNode = entry.path("request");
+                    String url = requestNode.path("url").asText("");
+                    if (shouldSkipUrl(url)) {
+                        continue;
+                    }
+                    List<String> record = createRecord(entry, requestNode, url);
                     printer.printRecord(record);
                 }
             }
@@ -50,10 +55,8 @@ public class HarConversionService {
         }
     }
 
-    private List<String> createRecord(JsonNode entry) {
+    private List<String> createRecord(JsonNode entry, JsonNode requestNode, String url) {
         List<String> record = new ArrayList<>();
-        JsonNode requestNode = entry.path("request");
-        String url = requestNode.path("url").asText("");
         record.add(url);
 
         URI uri = parseUri(url);
@@ -69,6 +72,17 @@ public class HarConversionService {
         record.add(extractResponse(entry.path("response")));
 
         return record;
+    }
+
+    private boolean shouldSkipUrl(String url) {
+        if (url == null) {
+            return false;
+        }
+        String lowerUrl = url.toLowerCase();
+        return lowerUrl.contains(".html")
+                || lowerUrl.contains(".js")
+                || lowerUrl.contains(".css")
+                || lowerUrl.contains(".json");
     }
 
     private URI parseUri(String url) {

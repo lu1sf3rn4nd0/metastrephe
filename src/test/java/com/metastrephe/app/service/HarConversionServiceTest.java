@@ -11,6 +11,8 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +33,14 @@ class HarConversionServiceTest {
                     .withQuote('"')
                     .parse(new StringReader(csvText));
 
-            CSVRecord record = records.iterator().next();
+            List<CSVRecord> recordList = new ArrayList<>();
+            for (CSVRecord record : records) {
+                recordList.add(record);
+            }
+
+            assertThat(recordList).hasSize(1);
+
+            CSVRecord record = recordList.get(0);
             assertThat(record.get("url")).isEqualTo("https://portoapi-hml.portoseguro.com.br/oauth/v2/access-token");
             assertThat(record.get("host")).isEqualTo("portoapi-hml.portoseguro.com.br");
             assertThat(record.get("step1")).isEqualTo("oauth");

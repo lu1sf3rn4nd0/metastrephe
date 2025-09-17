@@ -25,6 +25,8 @@ Após iniciar, acesse a documentação interativa Swagger em [http://localhost:8
 
 Envie uma requisição `POST` para `http://localhost:8080/api/har/convert` com um arquivo `.har` no campo `file` (multipart/form-data). O serviço retornará o arquivo CSV pronto para download. O tamanho máximo padrão para upload é de **50 MB** e pode ser ajustado nas propriedades `spring.servlet.multipart.max-file-size` e `spring.servlet.multipart.max-request-size` do arquivo `application.properties`.
 
+> **Nota:** Entradas cuja URL contenha `.html`, `.js`, `.css` ou `.json` são ignoradas durante a conversão.
+
 ## Conversão via linha de comando
 
 Também é possível executar a conversão diretamente pela linha de comando:
@@ -38,3 +40,5 @@ java -jar target/har-converter-0.0.1-SNAPSHOT.jar --har-file=/caminho/para/arqui
 - `--csv-file` (opcional): caminho para o arquivo `.csv` de saída. Se omitido, o arquivo será criado com o mesmo nome do `.har` na mesma pasta.
 
 O processo exibirá o caminho absoluto do CSV gerado e encerrará a aplicação após a conversão.
+
+> **Nota:** O mesmo filtro de URLs (ignorando `.html`, `.js`, `.css` e `.json`) é aplicado quando a conversão é feita pela linha de comando.
